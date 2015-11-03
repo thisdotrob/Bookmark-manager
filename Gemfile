@@ -9,3 +9,4 @@ gem 'dm-migrations'
 gem 'rspec'
 gem 'coveralls', require: false
 gem 'capybara'
+gem 'capybara/rspec'
