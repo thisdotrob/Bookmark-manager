@@ -6,7 +6,6 @@ feature 'creating links' do
     fill_in 'title', with: 'bitcoin'
     fill_in 'url', with: 'https://bitcoin.org/en/'
     click_on 'Create link'
-    # Link.create(url: 'https://bitcoin.org/en/', title: 'bitcoin')
     expect(current_path).to eq('/links')
     within 'ul.links' do
       expect(page).to have_content('bitcoin')
