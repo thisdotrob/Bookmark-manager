@@ -1,14 +1,16 @@
 feature 'filtering links by their tags' do
 
+  before (:each) do
+    Link.create(url: 'www.google.com', title: 'Google', tags: [Tag.first_or_create(name: 'search')])
+    Link.create(url: 'www.yahoo.com', title: 'Yahoo', tags: [Tag.first_or_create(name: 'search')])
+    Link.create(url: 'www.whufc.com', title: 'WHUFC', tags: [Tag.first_or_create(name: 'bubbles')])
+    Link.create(url: 'www.bubblewrap.tribe.net', title: 'Bubble Wrap', tags: [Tag.first_or_create(name: 'bubbles')])
+  end
+
   scenario 'filter links by the tag bubbles' do
-    link1 = Link.create(url: 'www.google.com', title: 'Google')
-    link2 = Link.create(url: 'www.bubbles.com', title: 'Bubble')
-    tag = Tag.create(name: 'bubbles')
-
-    link2.tags << tag
-    link2.save
-
     visit '/links/bubbles'
-    expect(page).to have_content 'Title: Bubble URL: www.bubbles.com'
+    within 'ul.links' do
+      expect(page).to have_content 'Title: Bubble Wrap URL: www.bubblewrap.tribe.net'
+    end
   end
 end

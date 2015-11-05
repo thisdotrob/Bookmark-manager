@@ -25,10 +25,10 @@ class BookmarkManager < Sinatra::Base
     redirect '/links'
   end
 
-  get '/links/bubbles' do
-    tag = Tag.first(name: 'bubbles')
-    @links = tag.links
-    erb :'links/bubbles'
+  get '/links/:name' do
+    tag = Tag.first(name: params[:name])
+    @links = tag ? tag.links : []
+    erb :'links/index'
   end
 
   run! if app_file == $0
