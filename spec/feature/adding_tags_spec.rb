@@ -1,6 +1,6 @@
 feature 'adding tags to links' do
 
-  let(:tags){ %w(cryptocurrency finance geek) }
+  # let(:tags){ %w(cryptocurrency finance geek) }
 
   scenario 'I can add a tag to a link so I can group my links together in relevant categories' do
     visit '/links/new'
@@ -15,9 +15,9 @@ feature 'adding tags to links' do
     visit '/links/new'
     fill_in 'title', with: 'bitcoin'
     fill_in 'url', with: 'https://bitcoin.org/en/'
-    fill_in 'tags', with: tags.join(',')
+    fill_in 'tags', with: 'cryptocurrency finance geek'
     click_on 'Create link'
-    expect(Link.first.tags.map(&:name)).to eq tags
+    expect(Link.first.tags.map(&:name)).to eq ['cryptocurrency', 'finance', 'geek']
   end
 
 end

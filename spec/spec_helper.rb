@@ -1,4 +1,4 @@
-ENV['RACK-ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 
 require 'capybara/rspec'
 require './app/data_mapper_setup'
