@@ -1,0 +1,14 @@
+<h1> Bubble links </h1>
+
+<ul class='links'>
+  <% @links.each do |link| %>
+  <li>
+    Title: <%= link.title %>
+    URL:   <%= link.url   %>
+  </li>
+  <% end %>
+</ul>
+
+<form action="/links">
+  <button type="submit"> Return to homepage</button>
+</form>
