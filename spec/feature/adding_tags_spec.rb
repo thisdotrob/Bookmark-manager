@@ -1,7 +1,5 @@
 feature 'adding tags to links' do
 
-  # let(:tags){ %w(cryptocurrency finance geek) }
-
   scenario 'I can add a tag to a link so I can group my links together in relevant categories' do
     visit '/links/new'
     fill_in 'title', with: 'bitcoin'
