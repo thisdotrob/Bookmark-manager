@@ -1,6 +1,6 @@
 feature "On the user sign-up page" do
 
-  scenario "The user count increases by one" do
+  scenario "The user count increases" do
     4.times { sign_up }
     expect(User.count).to be 5
   end
