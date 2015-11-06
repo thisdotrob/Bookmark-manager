@@ -14,6 +14,10 @@ class BookmarkManager < Sinatra::Base
     @current_user ||= User.get(session[:user_id])
   end
 
+  def validate_password(password, password_check)
+    password == password_check ? true : fail('passwords do not match')
+  end
+
   get '/' do
     erb :signup
   end
@@ -23,6 +27,25 @@ class BookmarkManager < Sinatra::Base
     @links = Link.all
     erb :'links/index'
   end
+
+  post '/verify-pw' do
+    p params
+    begin
+      password1 = params[:password]
+      password2 = params[:password_check]
+      validate_password(params[:password], params[:password_check])
+      redirect('/do-signup', 307)
+    rescue Exception => e
+      p "error message: #{e.inspect}"
+      redirect '/fix_pw'
+    end
+
+  end
+
+  get '/fix_pw' do
+    erb :'signup/fix_pw'
+  end
+
 
   post '/do-signup' do
     user = User.create(   username:   params[:username],
@@ -37,9 +60,9 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/links/saving' do
-    link = Link.create(url: params[:url], title: params[:title])
+    link = Link.first_or_create(url: params[:url], title: params[:title])
     params[:tags].split.each do |tag|
-      link.tags << Tag.create(name: tag)
+      link.tags << Tag.first_or_create(name: tag)
     end
     link.save
     redirect '/links'
