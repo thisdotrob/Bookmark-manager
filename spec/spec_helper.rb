@@ -1,11 +1,14 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'capybara/rspec'
+require 'database_cleaner'
+
 require './app/data_mapper_setup'
 require './app/models/link'
 require './app/models/tag'
 require './app/app'
-require 'database_cleaner'
+
+require './spec/web_helper'
 
 
 Capybara.app = BookmarkManager
@@ -30,6 +33,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    sign_up
   end
 
   config.after(:each) do

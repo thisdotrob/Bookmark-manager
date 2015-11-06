@@ -1,4 +1,4 @@
-<p>Welcome to bookmark manager, <%= @user_name %></p>
+<p>Welcome to bookmark manager, <%= current_user.email %></p>
 
 <h1> Links </h1>
 
@@ -14,5 +14,3 @@
 <form action="/links/new">
   <button type="submit"> Add new link</button>
 </form>
-
-<p>User count: <%= @user_count %></p>

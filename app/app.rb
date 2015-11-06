@@ -7,22 +7,28 @@ require_relative 'models/tag'
 require_relative 'models/user'
 
 class BookmarkManager < Sinatra::Base
-  set :session, true
+  enable :sessions
+  set :session_secret, 'bollocks'
+
+  def current_user
+    @current_user ||= User.get(session[:user_id])
+  end
 
   get '/' do
     erb :signup
   end
 
   get '/links' do
-    @user_count = User.count
-    user = User.first
-    @user_name = user.username unless user.nil?
+    @user_name = current_user.username
     @links = Link.all
     erb :'links/index'
   end
 
   post '/do-signup' do
-    User.create(username: params[:username], email: params[:email], password: params[:password])
+    user = User.create(   username:   params[:username],
+                          email:      params[:email],
+                          password:   params[:password] )
+    session[:user_id] = user.id
     redirect '/links'
   end
 
