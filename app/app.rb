@@ -27,15 +27,22 @@ class BookmarkManager < Sinatra::Base
                         email:          params[:email],
                         password:       params[:password],
                         password_confirmation: params[:password_confirmation])
-    session[:user_id] = user.id
 
-    if current_user.nil?
-      flash[:success] = "Passwords do not match, try again."
-      redirect '/'
-    else
-      flash[:success] = "User created successfully."
+
+    if user.save
+      session[:user_id] = user.id
       redirect '/links'
+    else
+      error_msg = ''
+      user.errors.each do |error|
+        error_msg << "#{error[0]}\n"
+      end
+      flash[:error] = error_msg
+      flash[:email] = params[:email]
+      flash[:username] = params[:username]
+      redirect '/'
     end
+
   end
 
   get '/links' do

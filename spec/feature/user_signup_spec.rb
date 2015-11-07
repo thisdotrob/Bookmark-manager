@@ -13,7 +13,7 @@ feature "On the user sign-up page" do
     expect(User.first.email).to eq 'user1@users.com'
   end
 
-  scenario "Stays on same page on password mismatch" do
+  scenario "User can't sign up when password do not match" do
     visit('/')
     fill_in 'username', with: 'user2'
     fill_in 'email', with: 'user2@users.com'
@@ -21,16 +21,38 @@ feature "On the user sign-up page" do
     fill_in 'password_confirmation', with: 'xxx'
     click_button 'Submit'
     expect(current_path).to eq('/')
+    expect(page).to have_content 'Passwords do not match.'
   end
 
-  scenario "Displays error messageo on password mismatch" do
+  scenario "User can't sign up without entering an email" do
     visit('/')
     fill_in 'username', with: 'user2'
+    fill_in 'password', with: 'password1'
+    fill_in 'password_confirmation', with: 'password1'
+    click_button 'Submit'
+    expect(current_path).to eq('/')
+    expect(page).to have_content 'Email is empty.'
+  end
+
+  scenario "User can't sign up without entering a username" do
+    visit('/')
     fill_in 'email', with: 'user2@users.com'
     fill_in 'password', with: 'password1'
-    fill_in 'password_confirmation', with: 'xxx'
+    fill_in 'password_confirmation', with: 'password1'
     click_button 'Submit'
-    expect(page).to have_content 'Passwords do not match, try again.'
+    expect(current_path).to eq('/')
+    expect(page).to have_content 'Username is empty.'
+  end
+
+  scenario "User can't sign up with invalid formatted email address" do
+    visit('/')
+    fill_in 'username', with: 'user2'
+    fill_in 'email', with: 'user2@users'
+    fill_in 'password', with: 'password1'
+    fill_in 'password_confirmation', with: 'password1'
+    click_button 'Submit'
+    expect(current_path).to eq('/')
+    expect(page).to have_content 'Incorrect email format.'
   end
 
 end

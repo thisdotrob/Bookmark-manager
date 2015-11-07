@@ -1,11 +1,15 @@
-<% if flash[:success] %>
-<p><%= flash[:success] %></p>
+<% if flash[:error] %>
+<p><%= flash[:error] %></p>
 <% end %>
 
 <form action='/do-signup' method='post'>
-  <input type='text' name='username' value='Enter username' />
-  <input type='text' name='email' value='Enter email address' />
-  <input type='password' name='password' value='Enter password' />
-  <input type='password' name='password_confirmation' value='Enter password Again' />
+  <label>User name:</label>
+  <input type='text' name='username' value='<%= flash[:username] %>' />
+  <label>Email:</label>
+  <input type='text' name='email' value='<%= flash[:email] %>' />
+  <label>Password:</label>
+  <input type='password' name='password' />
+  <label>Re-enter password:</label>
+  <input type='password' name='password_confirmation' />
   <input type='submit' value='Submit' name='Submit' />
 </form>
