@@ -19,14 +19,18 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/' do
-    erb :signup
+    redirect '/sessions/new'
   end
 
-  get '/sign-in' do
-    erb :signin
+  get '/sessions/new' do
+    erb :'sessions/new'
   end
 
-  post '/do-signin' do
+  get '/users/new' do
+    erb :'users/new'
+  end
+
+  post '/sessions' do
     user = User.first(email: params[:email])
     if user.nil?
       flash[:sign_in_error] = 'User not found'
@@ -36,24 +40,21 @@ class BookmarkManager < Sinatra::Base
     else
       flash[:sign_in_error] = 'Incorrect password'
     end
-    redirect '/sign-in'
+    redirect '/sessions/new'
   end
 
-  post '/do-signup' do
+  post '/users' do
     user = User.create( email:          params[:email],
                         password:       params[:password],
                         password_confirmation: params[:password_confirmation])
-
-
     if user.save
       session[:user_id] = user.id
       redirect '/links'
     else
       flash[:errors] = user.errors.full_messages
       flash[:email] = params[:email]
-      redirect '/'
+      redirect '/users/new'
     end
-
   end
 
   get '/links' do
@@ -65,7 +66,7 @@ class BookmarkManager < Sinatra::Base
     erb :'links/new'
   end
 
-  post '/links/saving' do
+  post '/links' do
     link = Link.first_or_create(url: params[:url], title: params[:title])
     params[:tags].split.each do |tag|
       link.tags << Tag.first_or_create(name: tag)
