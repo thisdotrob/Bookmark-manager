@@ -2,7 +2,7 @@ feature "User sign-in" do
 
   scenario "successful sign-in displays welcome message" do
     sign_in
-    expect(page).to have_content 'user1@users.com signed in.'
+    expect(page).to have_content 'Logged in as user1@users.com.'
   end
 
 end
