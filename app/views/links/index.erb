@@ -1,4 +1,13 @@
-<p>Welcome to bookmark manager, <%= current_user.email %></p>
+<% if flash[:message] %>
+<%= flash[:message] %>
+<% end %>
+
+<% if current_user %>
+<form action='/sessions' method='post'>
+  <input type='hidden' name="_method" value='delete' />
+  <input type='submit' value='Sign out' />
+</form>
+<% end %>
 
 <h1> Links </h1>
 
@@ -12,5 +21,5 @@
 </ul>
 
 <form action="/links/new">
-  <button type="submit"> Add new link</button>
+  <button type="submit">Add new link</button>
 </form>

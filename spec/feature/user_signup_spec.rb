@@ -13,31 +13,31 @@ feature "On the user sign-up page" do
   end
 
   scenario "User can't sign up when password do not match" do
-    visit('/')
+    visit('/users/new')
     fill_in 'email', with: 'user2@users.com'
     fill_in 'password', with: 'password1'
     fill_in 'password_confirmation', with: 'xxx'
     click_button 'Submit'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/users/new')
     expect(page).to have_content 'Passwords do not match.'
   end
 
   scenario "User can't sign up without entering an email" do
-    visit('/')
+    visit('/users/new')
     fill_in 'password', with: 'password1'
     fill_in 'password_confirmation', with: 'password1'
     click_button 'Submit'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/users/new')
     expect(page).to have_content 'Email is empty.'
   end
 
   scenario "User can't sign up with invalid formatted email address" do
-    visit('/')
+    visit('/users/new')
     fill_in 'email', with: 'user2@users'
     fill_in 'password', with: 'password1'
     fill_in 'password_confirmation', with: 'password1'
     click_button 'Submit'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/users/new')
     expect(page).to have_content 'Incorrect email format.'
   end
 

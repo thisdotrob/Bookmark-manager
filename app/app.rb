@@ -10,6 +10,7 @@ require_relative 'models/user'
 
 class BookmarkManager < Sinatra::Base
   enable :sessions
+  use Rack::MethodOverride
   register Sinatra::Flash
 
   set :session_secret, 'bollocks'
@@ -26,8 +27,10 @@ class BookmarkManager < Sinatra::Base
     erb :'sessions/new'
   end
 
-  get '/users/new' do
-    erb :'users/new'
+  delete '/sessions' do
+    session[:user_id] = nil
+    flash[:message] = 'Goodbye!'
+    redirect '/links'
   end
 
   post '/sessions' do
@@ -36,11 +39,16 @@ class BookmarkManager < Sinatra::Base
       flash[:sign_in_error] = 'User not found'
     elsif user.password == params[:password]
       session[:user_id] = user.id
+      flash[:message] = "#{user.email} signed in."
       redirect '/links'
     else
       flash[:sign_in_error] = 'Incorrect password'
     end
     redirect '/sessions/new'
+  end
+
+  get '/users/new' do
+    erb :'users/new'
   end
 
   post '/users' do
@@ -49,6 +57,7 @@ class BookmarkManager < Sinatra::Base
                         password_confirmation: params[:password_confirmation])
     if user.save
       session[:user_id] = user.id
+      flash[:message] = "Welcome to bookmark manager, #{user.email}."
       redirect '/links'
     else
       flash[:errors] = user.errors.full_messages
