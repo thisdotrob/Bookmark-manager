@@ -22,6 +22,23 @@ class BookmarkManager < Sinatra::Base
     erb :signup
   end
 
+  get '/sign-in' do
+    erb :signin
+  end
+
+  post '/do-signin' do
+    user = User.first(email: params[:email])
+    if user.nil?
+      flash[:sign_in_error] = 'User not found'
+    elsif user.password == params[:password]
+      session[:user_id] = user.id
+      redirect '/links'
+    else
+      flash[:sign_in_error] = 'Incorrect password'
+    end
+    redirect '/sign-in'
+  end
+
   post '/do-signup' do
     user = User.create( email:          params[:email],
                         password:       params[:password],

@@ -1,0 +1,9 @@
+<%= flash[:sign_in_error] %>
+
+<form action='/do-signin' method='post'>
+  <label>Email:</label>
+  <input type='text' name='email' />
+  <label>Password:</label>
+  <input type='password' name='password' />
+  <input type='submit' value='Sign in' name='Sign in' />
+</form>
