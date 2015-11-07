@@ -3,9 +3,7 @@ ENV['RACK_ENV'] = 'test'
 require 'capybara/rspec'
 require 'database_cleaner'
 
-require './app/data_mapper_setup'
-require './app/models/link'
-require './app/models/tag'
+require './app/models/init'
 require './app/app'
 
 require_relative 'helpers/session'

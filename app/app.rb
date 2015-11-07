@@ -3,13 +3,12 @@ ENV['RACK_ENV'] ||= 'development'
 require 'sinatra/base'
 require 'sinatra/flash'
 
-require_relative 'data_mapper_setup'
-require_relative 'models/link'
-require_relative 'models/tag'
-require_relative 'models/user'
+require_relative 'models/init'
+require_relative 'controllers/init'
 
 class BookmarkManager < Sinatra::Base
   enable :sessions
+  set :views, Proc.new { File.join(root, "../views") }
   use Rack::MethodOverride
   register Sinatra::Flash
 
@@ -21,73 +20,6 @@ class BookmarkManager < Sinatra::Base
 
   get '/' do
     redirect '/sessions/new'
-  end
-
-  get '/sessions/new' do
-    erb :'sessions/new'
-  end
-
-  delete '/sessions' do
-    session[:user_id] = nil
-    flash.next[:message] = 'Goodbye!'
-    redirect '/links'
-  end
-
-  post '/sessions' do
-    user = User.first(email: params[:email])
-    if user.nil?
-      flash.next[:sign_in_error] = 'User not found'
-    elsif user.password == params[:password]
-      session[:user_id] = user.id
-      flash.next[:message] = "Logged in as #{user.email}."
-      redirect '/links'
-    else
-      flash.next[:sign_in_error] = 'Incorrect password'
-    end
-    redirect '/sessions/new'
-  end
-
-  get '/users/new' do
-    erb :'users/new'
-  end
-
-  post '/users' do
-    user = User.create( email:                 params[:email],
-                        password:              params[:password],
-                        password_confirmation: params[:password_confirmation])
-    if user.save
-      session[:user_id] = user.id
-      flash.next[:message] = "Welcome to bookmark manager, #{user.email}."
-      redirect '/links'
-    else
-      flash.next[:errors] = user.errors.full_messages
-      flash.next[:email] = params[:email]
-      redirect '/users/new'
-    end
-  end
-
-  get '/links' do
-    @links = Link.all
-    erb :'links/index'
-  end
-
-  get '/links/new' do
-    erb :'links/new'
-  end
-
-  post '/links' do
-    link = Link.first_or_create(url: params[:url], title: params[:title])
-    params[:tags].split.each do |tag|
-      link.tags << Tag.first_or_create(name: tag)
-    end
-    link.save
-    redirect '/links'
-  end
-
-  get '/links/:name' do
-    tag = Tag.first(name: params[:name])
-    @links = tag ? tag.links : []
-    erb :'links/index'
   end
 
   run! if app_file == $0
