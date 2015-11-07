@@ -29,20 +29,20 @@ class BookmarkManager < Sinatra::Base
 
   delete '/sessions' do
     session[:user_id] = nil
-    flash[:message] = 'Goodbye!'
+    flash.next[:message] = 'Goodbye!'
     redirect '/links'
   end
 
   post '/sessions' do
     user = User.first(email: params[:email])
     if user.nil?
-      flash[:sign_in_error] = 'User not found'
+      flash.next[:sign_in_error] = 'User not found'
     elsif user.password == params[:password]
       session[:user_id] = user.id
-      flash[:message] = "#{user.email} signed in."
+      flash.next[:message] = "Logged in as #{user.email}."
       redirect '/links'
     else
-      flash[:sign_in_error] = 'Incorrect password'
+      flash.next[:sign_in_error] = 'Incorrect password'
     end
     redirect '/sessions/new'
   end
@@ -57,11 +57,11 @@ class BookmarkManager < Sinatra::Base
                         password_confirmation: params[:password_confirmation])
     if user.save
       session[:user_id] = user.id
-      flash[:message] = "Welcome to bookmark manager, #{user.email}."
+      flash.next[:message] = "Welcome to bookmark manager, #{user.email}."
       redirect '/links'
     else
-      flash[:errors] = user.errors.full_messages
-      flash[:email] = params[:email]
+      flash.next[:errors] = user.errors.full_messages
+      flash.next[:email] = params[:email]
       redirect '/users/new'
     end
   end
