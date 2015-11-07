@@ -1,8 +1,7 @@
 feature "On the user sign-up page" do
 
   scenario "The user count increases" do
-    4.times { sign_up }
-    expect(User.count).to be 5
+    expect(User.count).to be 1
   end
 
   scenario "The page displays a welcome message" do
@@ -40,6 +39,11 @@ feature "On the user sign-up page" do
     click_button 'Submit'
     expect(current_path).to eq('/')
     expect(page).to have_content 'Incorrect email format.'
+  end
+
+  scenario "User can't sign up with an email address that is already in use" do
+    sign_up
+    expect(page).to have_content 'User already exists.'
   end
 
 end

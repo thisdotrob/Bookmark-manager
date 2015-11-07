@@ -1,5 +1,9 @@
-<% if flash[:error] %>
-<p><%= flash[:error] %></p>
+<% if flash[:errors] && !flash[:errors].empty? %>
+  <ul>
+    <% flash[:errors].each do |error| %>
+    <li><%= error %></li>
+    <% end %>
+  </ul>
 <% end %>
 
 <form action='/do-signup' method='post'>

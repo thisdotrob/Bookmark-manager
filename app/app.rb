@@ -32,11 +32,7 @@ class BookmarkManager < Sinatra::Base
       session[:user_id] = user.id
       redirect '/links'
     else
-      error_msg = ''
-      user.errors.each do |error|
-        error_msg << "#{error[0]}\n"
-      end
-      flash[:error] = error_msg
+      flash[:errors] = user.errors.full_messages
       flash[:email] = params[:email]
       redirect '/'
     end
