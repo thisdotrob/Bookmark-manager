@@ -1,3 +1,7 @@
+<% if flash[:success] %>
+<p><%= flash[:success] %></p>
+<% end %>
+
 <form action='/do-signup' method='post'>
   <input type='text' name='username' value='Enter username' />
   <input type='text' name='email' value='Enter email address' />

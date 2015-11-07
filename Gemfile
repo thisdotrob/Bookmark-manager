@@ -11,3 +11,4 @@ gem 'coveralls', require: false
 gem 'capybara'
 gem 'database_cleaner'
 gem 'rake'
+gem 'sinatra-flash'
