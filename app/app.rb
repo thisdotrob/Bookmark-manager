@@ -23,8 +23,7 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/do-signup' do
-    user = User.create( username:       params[:username],
-                        email:          params[:email],
+    user = User.create( email:          params[:email],
                         password:       params[:password],
                         password_confirmation: params[:password_confirmation])
 
@@ -39,7 +38,6 @@ class BookmarkManager < Sinatra::Base
       end
       flash[:error] = error_msg
       flash[:email] = params[:email]
-      flash[:username] = params[:username]
       redirect '/'
     end
 
