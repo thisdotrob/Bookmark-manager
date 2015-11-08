@@ -2,7 +2,7 @@ class BookmarkManager < Sinatra::Base
 
   get '/links' do
     if current_user
-      flash.now[:logged_in_msg] = "Logged in as #{current_user.email}."
+      flash.now[:logged_in_msg] = "Logged in as #{current_user.email}"
     end
     @links = Link.all
     erb :'links/index'

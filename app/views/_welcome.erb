@@ -1,0 +1,9 @@
+<% if flash[:exit_msg] %>
+<%= flash[:exit_msg] %>
+<% end %>
+
+<% if flash[:welcome_msg] %>
+<%= flash[:welcome_msg] %>
+<% elsif flash[:logged_in_msg] %>
+<%= flash[:logged_in_msg] %>
+<% end %>

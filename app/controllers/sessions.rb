@@ -11,16 +11,15 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/sessions' do
-    user = User.first(email: params[:email])
+    user = User.authenticate(params[:email], params[:password])
     if user.nil?
-      flash.next[:sign_in_error] = 'User not found'
-    elsif user.password == params[:password]
+      flash.next[:sign_in_error] = 'Log in details incorrect.'
+      redirect '/sessions/new'
+    else
       session[:user_id] = user.id
       redirect '/links'
-    else
-      flash.next[:sign_in_error] = 'Incorrect password'
     end
-    redirect '/sessions/new'
+
   end
 
 end

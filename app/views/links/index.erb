@@ -1,19 +1,9 @@
-<% if flash[:exit_msg] %>
-<%= flash[:exit_msg] %>
-<% end %>
 
-<% if flash[:welcome_msg] %>
-<%= flash[:welcome_msg] %>
-<% end %>
-
-<% if flash[:logged_in_msg] %>
-<%= flash[:logged_in_msg] %>
-<% end %>
 
 <% if current_user %>
 <form action='/sessions' method='post'>
   <input type='hidden' name="_method" value='delete' />
-  <input type='submit' value='Sign out' />
+  <input type='submit' value='Sign out' name='Sign out' />
 </form>
 <% end %>
 
