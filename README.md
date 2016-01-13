@@ -44,7 +44,7 @@ I would like to filter links by tag
 0. run `rackup`
 0. visit http://localhost:9292
 
-## Run tests
+## Tests
 0. create a new database in postgresql called `"bookmark_manager_test"`
 0. run `rake db:auto_migrate RACK_ENV="test"`
 0. run `rspec`
